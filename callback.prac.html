@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>주문표</title>
+<style>
+    p{
+        color: rgba(233, 7, 7, 0.904);
+    }
+</style>
+</head>
+<body>
+    <p>무엇을 주문하시겠습니까?</p><br> 
+    <button>주문</button>
+    <div id="rDiv"></div>
+    <script>
+        var btn = document.querySelector('button');
+        btn.onclick = function(){
+            order(1,callback);
+            order(2,callback);
+        }
+        function callback(res,func2){            
+            var divObj = document.querySelector('#rDiv');
+            divObj.innerHTML += '<br>주문메뉴 : ' + res.ftName;
+            divObj.innerHTML += '<br>가격 : ' + res.ftPrice;
+            func2(res.ftName, plusSoju);
+        }
+        function order(menu, func){
+            var xhr = new XMLHttpRequest();
+            var url = 'http://localhost:88/menus?ftNum='+menu;
+            if(menu==2){
+                url = 'http://localhost:88/menus2?ftNum='+menu;
+            }
+            xhr.open('GET',url);
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState === this.DONE){
+                    if(xhr.status === 200){
+                        var res = JSON.parse(this.response);
+                        func(res[0],cheakOne);
+                    }
+                }
+            }
+            xhr.send();                     
+        }
+        
+        function cheakOne(str,func3){
+            if(str=='자장면'){
+                alert('ok 소주추가요!!');
+                func3(2,showResult)
+            }
+        }
+        function plusSoju(num,func4){
+            var xhr = new XMLHttpRequest();
+            var url = 'http://localhost:88/menus?ftNum=2';
+            xhr.open('GET',url);
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState === this.DONE){
+                    if(xhr.status === 200){
+                        var res = JSON.parse(this.response);
+                        func4(res[0]);
+                    }
+                }
+            }
+            xhr.send();     
+        }
+        function showResult(res){
+            var divObj = document.querySelector('#rDiv');
+            divObj.innerHTML += res.ftName + '추가요';
+        }
+    </script>
+</body>
+</html>
