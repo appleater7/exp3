@@ -37,14 +37,6 @@ var selectBoardInfoFunc = async function(req,res){
 }
 server.get('/test',selectBoardInfoFunc);
 
-server.post('/test', async function(req,res){
-    let sql = 'insert into test_info(ti_num, ti_name)';
-    sql += 'values(:ti_num, :ti_name)';
-
-    var con = await oraDB.getConnection();
-    var result
-})
-
 server.listen(82,async function(){
     await oraDB.createPool(dbconf);
     console.log('test');
