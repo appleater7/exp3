@@ -42,7 +42,9 @@ server.post('/test', async function(req,res){
     sql += 'values(:ti_num, :ti_name)';
 
     var con = await oraDB.getConnection();
-    var result
+    var result = await con.execute(sql, req.body);
+    console.log(result);
+    res.json(result);
 })
 
 server.listen(82,async function(){
