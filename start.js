@@ -39,11 +39,39 @@ server.get('/test',selectBoardInfoFunc);
 
 server.post('/test', async function(req,res){
     let sql = 'insert into test_info(ti_num, ti_name)';
-    sql += 'values(:ti_num, :ti_name)';
-
+    sql += ' values(:ti_num, :ti_name)';
+    console.log(req.body);
     var con = await oraDB.getConnection();
     var result = await con.execute(sql, req.body);
-    console.log(result);
+    console.log(result);    
+    await con.commit();
+    await con.close();
+
+    res.json(result);
+})
+
+server.put('/test', async function(req,res){
+    let sql = 'update test_info';
+    sql += ' set ti_name=:ti_name';
+    sql += ' where ti_num=:ti_num';
+    console.log(req.body);
+    var con = await oraDB.getConnection();
+    var result = await con.execute(sql, req.body);  
+    await con.commit();
+    await con.close();
+
+    res.json(result);
+})
+
+server.delete('/test/:ti_num', async function(req,res){
+    let sql = 'delete from test_info';
+    sql += ' where ti_num=:ti_num';
+    console.log(req.params);
+    var con = await oraDB.getConnection();
+    var result = await con.execute(sql, req.params);  
+    await con.commit();
+    await con.close();
+
     res.json(result);
 })
 
