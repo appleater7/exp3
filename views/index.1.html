@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>제이쿼리</title>
+        <meta charset="utf-8">
+    </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <body>
+        <div id="div1">
+            헬로
+        </div>
+        <button id="btn1">show</button>
+        <script>
+                // alert($('#div1').html('테스트'));
+                // $('#div1').append('<br>테스트2');
+        
+                var $2 = function(selector){
+                    var obj = document.querySelector(selector);
+                    // obj 하위에 있는 함수이기때문에 this 는 obj 를 가르킨다.
+                    obj.click = function(func){
+                        this.onclick = func;
+                    }
+                    obj.event = function(type,func){
+                        obj.addEventListener(type,func);
+                    }
+                    obj.html = function(text){
+                        if(text){
+                            this.innerHTML = text;
+                        }
+                        return this.innerHTML;
+                    }
+                    obj.append = function(text){
+                        if(text){
+                            this.innerHTML += text;
+                        }
+                        return this.innerHTML;
+                    }
+                    obj.hide = function(time){
+                        this.style.opacity = 1;
+                        // () => 는 setInterval 을 호출했을시의 this 를 바라보게 한다.
+                        var interval = setInterval(()=>{
+                            this.style.opacity = parseFloat(this.style.opacity) - 0.1;
+                            if(this.style.opacity == 0){
+                                clearInterval(interval);
+                            }
+                        },time);
+                    }
+                    obj.show = function(time){
+                        var interval = setInterval(()=>{
+                            this.style.opacity = parseFloat(this.style.opacity) + 0.1;
+                            if(this.style.opacity == 1){
+                                clearInterval(interval);
+                            }
+                        },time);
+                    }
+                    return obj;            
+                }
+                alert($2('#div1').append('<br>이걸로 바뀌나?'));
+                $2('#div1').hide(100);
+                $2('#btn1').click(function(){
+                    $2('#div1').show(100);
+                });
+                $2('#btn1').event('click',function(){
+                    alert(1);
+                });
+            </script>
+    </body>    
+</html>

@@ -8,6 +8,9 @@ var server = exp();
 server.use(bodyParser.urlencoded({extended:true}));
 server.use('/test',testController);
 server.use('/node',nodeController);
+server.get('/views/**',(req,res)=>{
+    res.sendFile(__dirname+req.url);
+})
 server.listen(82,async function(){   
     console.log('test');
 })
