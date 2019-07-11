@@ -11,6 +11,9 @@ server.use('/node',nodeController);
 server.get('/views/**',(req,res)=>{
     res.sendFile(__dirname+req.url);
 })
+server.get('/res/**',(req,res)=>{
+    res.sendFile(__dirname+req.url);
+})
 server.listen(82,async function(){   
     console.log('test');
 })
